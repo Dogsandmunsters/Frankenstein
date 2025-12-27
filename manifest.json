@@ -1,0 +1,24 @@
+{
+  "name": "I, Frankenstein",
+  "short_name": "Frankenstein",
+  "description": "An interactive retelling of Mary Shelley's classic",
+  "start_url": "./story.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1955,8 +1955,11 @@ function movePreviousToSofar(addtext, chapterImage, chapterId) {
         thisbiti = document.getElementById('thisbit').innerHTML;
     }
     
-    // Remove all option buttons from past text entirely
-    thisbiti = thisbiti.replace(/<span[^>]*class="buttonon"[^>]*>[\s\S]*?<\/span>/g, '');
+    // Remove all option buttons using DOM manipulation (handles nested spans correctly)
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = thisbiti;
+    tempDiv.querySelectorAll('.buttonon').forEach(el => el.remove());
+    thisbiti = tempDiv.innerHTML;
     
     // Clean up onclick handlers and update IDs for any remaining elements
     thisbiti = thisbiti.replace(/onclick="[^"]*"/g, '');
@@ -1969,6 +1972,8 @@ function movePreviousToSofar(addtext, chapterImage, chapterId) {
         if (optEl) {
             let optbit = optEl.innerHTML;
             optbit = optbit.replace(/xoptx /g, '');
+            // Remove the question marker span if present
+            optbit = optbit.replace(/<span[^>]*class="question"[^>]*>[^<]*<\/span>/g, '');
             // Clean up trailing line breaks
             optbit = optbit.replace(/<br\s*\/?>\s*<br\s*\/?>\s*$/g, '');
             thisbiti = thisbiti + "<em>" + optbit.trim() + "</em><br/><br/>";

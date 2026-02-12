@@ -1,6 +1,7 @@
-const CACHE_NAME = 'frankenstein-v1';
+const CACHE_NAME = 'frankenstein-v2';
 const ASSETS = [
   './',
+  './index.html',
   './story.html',
   './manifest.json',
   './images/icon-192.png',
@@ -37,7 +38,15 @@ const ASSETS = [
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ASSETS))
+      .then(cache => {
+        return Promise.all(
+          ASSETS.map(asset =>
+            cache.add(asset).catch(err => {
+              console.error('Failed to cache:', asset, err);
+            })
+          )
+        );
+      })
       .then(() => self.skipWaiting())
   );
 });

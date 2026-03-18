@@ -3977,7 +3977,7 @@ if(s=="01_HU")
 if(s=="01_HV")
 {
 		if(!(vars[demonize]==1)) hidepiece("piece01_HV_0");
-	if(!(vars[demonize]==1)) hidepiece("piece01_HV_1");
+	if(!(vars[demonize]==0)) hidepiece("piece01_HV_1");
 	if(!(vars[demonize]==1)) hidepiece("piece01_HV_2");
 	if(!(vars[demonize]==1)) hidepiece("piece01_HV_3");
 	if(!(vars[demonize]==0)) hidepiece("piece01_HV_5");
@@ -4427,8 +4427,8 @@ if(s=="01_KQ")
 if(s=="01_KR")
 {
 	temp=0;if(((vars[d_two_20b]==1)||(vars[d_two_21a]==1))&&(vars[c_thirteen_12a]==0))temp=1;
-	if(!(vars[demonize]==0)) hidepiece("piece01_KR_0");
-	if(!(vars[demonize]==1)) hidepiece("piece01_KR_1");
+	if(!(vars[demonize]==1)) hidepiece("piece01_KR_0");
+	if(!(vars[demonize]==0)) hidepiece("piece01_KR_1");
 	if(!((temp==0)&&(vars[demonize]==1))) hidepiece("piece01_KR_2");
 	if(!((temp==0)&&(vars[demonize]==0))) hidepiece("piece01_KR_3");
 	if(!(temp==1)) hidepiece("piece01_KR_4");
@@ -5582,15 +5582,15 @@ if(s=="01_QS")
 }
 if(s=="01_QT")
 {
-		if(!(vars[demonize]==0)) hidepiece("piece01_QT_0");
-	if(!(vars[demonize]==1)) hidepiece("piece01_QT_1");
+		if(!(vars[demonize]==1)) hidepiece("piece01_QT_0");
+	if(!(vars[demonize]==0)) hidepiece("piece01_QT_1");
 	if(!(vars[victor_empathy]<-1)) hidepiece("piece01_QT_2");
 	if(!(vars[victor_empathy]>=-1)) hidepiece("piece01_QT_3");
 }
 if(s=="01_QU")
 {
-		if(!(vars[demonize]==0)) hidepiece("piece01_QU_0");
-	if(!(vars[demonize]==1)) hidepiece("piece01_QU_1");
+		if(!(vars[demonize]==1)) hidepiece("piece01_QU_0");
+	if(!(vars[demonize]==0)) hidepiece("piece01_QU_1");
 	if(!(vars[victor_empathy]<-1)) hidepiece("piece01_QU_2");
 	if(!(vars[victor_empathy]>=-1)) hidepiece("piece01_QU_3");
 }

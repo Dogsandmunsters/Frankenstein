@@ -1,4 +1,4 @@
-const CACHE_NAME = 'frankenstein-v3';
+const CACHE_NAME = 'frankenstein-v4';
 const ASSETS = [
   './',
   './index.html',

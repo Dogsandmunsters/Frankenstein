@@ -174,12 +174,12 @@ function condVars(e, s) { if (e.t === 'cmp') { if (!(e.v in TALLY) && e.v !== TR
 function renderBody(c, depth, out) {
   const p = pageData[c]; const s = p.s;
   if (chapterImages[s]) out.push(`[ILLUSTRATION: ${chapterImages[s]}]`, '');
-  if (detail[s] && detail[s].textDiffers && depth === 0) out.push('> ⚠ TRUST-DEPENDENT TEXT: this copy of the section reads differently from its other Trust-thread copies (text or links that today depend on Trust have been resolved for this thread).', '');
+  if (detail[s] && detail[s].textDiffers && depth === 0) out.push('> !! TRUST-DEPENDENT TEXT: this copy of the section reads differently from its other Trust-thread copies (text or links that today depend on Trust have been resolved for this thread).', '');
   // instructions
   const instr = [];
   for (const st of p.fx.sets) if (!(st.v in TALLY) && st.v !== TRUST) { noteKW(st.v, st.n ? 'set' : 'del', s); condVars(st.cond, s); const act = st.n ? `Note the keyword ${KW(st.v)}.` : `Delete the keyword ${KW(st.v)} if you have it.`; instr.push(isC(st.cond, true) ? act : `If ${render(st.cond)}: ${act}`); }
   for (const inc of p.fx.incs) if (inc.v in TALLY) { condVars(inc.cond, s); const act = `${inc.d > 0 ? 'Add' : 'Subtract'} ${Math.abs(inc.d)} ${inc.d > 0 ? 'to' : 'from'} your ${TALLY[inc.v]} score.`; instr.push(isC(inc.cond, true) ? act : `If ${render(inc.cond)}: ${act}`); }
-  for (const u of p.unhandled) { editCount++; editSites.add(s + '/u'); instr.push(`⚠ EDIT: unhandled logic ${u}`); }
+  for (const u of p.unhandled) { editCount++; editSites.add(s + '/u'); instr.push(`!! EDIT: unhandled logic ${u}`); }
   if (instr.length) { out.push(...instr.map(x => `> ${x}`), ''); }
   // body text with conditional pieces
   let body = ''; let prevHtml = '';
@@ -192,8 +192,8 @@ function renderBody(c, depth, out) {
     if (isC(shown, true)) { body += txt; continue; }
     condVars(shown, s);
     const inline = !(/(^|\n|\u0001)\s*$/.test(body) || /^\s*[\n\u0001]/.test(txt)) || !/(\n|\u0001)\s*$/.test(txt);
-    if (inline) { editCount++; editSites.add(s + '/' + sg.id); body += `⟦⚠ EDIT inline, if ${render(shown)}: ${txt.trim()}⟧`; }
-    else body += `\n⟦If ${render(shown)}, read the following:⟧\n${txt}`;
+    if (inline) { editCount++; editSites.add(s + '/' + sg.id); body += `[[!! EDIT inline, if ${render(shown)}: ${txt.trim()}]]`; }
+    else body += `\n[[If ${render(shown)}, read the following:]]\n${txt}`;
   }
   body = finishText(body);
   if (body) out.push(body, '');
@@ -203,7 +203,7 @@ function renderBody(c, depth, out) {
     const e = p.autoEdges[0];
     if (pageNo[e.cls] !== undefined) out.push(`→ Turn to ${pageNo[e.cls]}.`, '');
     else if (depth < 12) renderBody(e.cls, depth + 1, out);
-    else out.push(`⚠ EDIT: auto-chain too deep at ${e.target}`);
+    else out.push(`!! EDIT: auto-chain too deep at ${e.target}`);
   } else if (p.autoEdges.length) {
     for (const e of p.autoEdges) { condVars(e.cond, s); out.push(`→ If ${render(e.cond)}, turn to ${pageNo[e.cls] ?? '??'}.`); }
     out.push('');
@@ -232,10 +232,10 @@ front.push('Generated from story.html. Conventions:', '');
 front.push('- The reader keeps two scores, **Empathy** and **Alienation**, both starting at 0. Instructions to change them appear as `> Add 1 to your Empathy score.`', '');
 front.push('- Every true/false flag in the game is a **keyword** the reader notes down. Placeholders are `KW_<name>`; rename them as you like. `> Note the keyword KW_x.` means the reader writes it down; `> Delete the keyword` means they cross it out.', '');
 front.push('- The third score, Trust, is not tracked by the reader. Instead each section that depends on it exists in several numbered copies, one per **Trust thread** (shown in the page header). Links always send the reader to the copy that matches their choices, so the reader never sees Trust.', '');
-front.push('- Text that today appears only under a condition is marked `⟦If you have KW_x, read the following:⟧` when it is a whole paragraph, or `⟦⚠ EDIT inline, if …: …⟧` when it sits inside a sentence. **Every ⚠ EDIT marker needs your hand**: decide whether to keep both readings with a keyword instruction, or rewrite the sentence so one wording serves both.', '');
+front.push('- Text that today appears only under a condition is marked `[[If you have KW_x, read the following:]]` when it is a whole paragraph, or `[[!! EDIT inline, if …: …]]` when it sits inside a sentence. **Every !! EDIT marker needs your hand**: decide whether to keep both readings with a keyword instruction, or rewrite the sentence so one wording serves both.', '');
 front.push('- Choices are listed as `• text — turn to N`. A choice shown only under a condition is prefixed `[If …]`. A `→ If …, turn to N` line is an automatic continuation that depends on a keyword or score.', '');
-front.push(`- ${order.length} numbered pages and ${kwList.length} keyword placeholders. ${editCount} ⚠ EDIT markers in all, but only ${editSites.size} distinct edit sites: the rest are the same sentence repeated in Trust-thread copies, so fix it once and paste the fix into the other copies.`, '');
-front.push('- Copies of a section in different Trust threads have identical text and instructions except where the page carries a `⚠ TRUST-DEPENDENT TEXT` note; otherwise only the link numbers differ.', '');
+front.push(`- ${order.length} numbered pages and ${kwList.length} keyword placeholders. ${editCount} !! EDIT markers in all, but only ${editSites.size} distinct edit sites: the rest are the same sentence repeated in Trust-thread copies, so fix it once and paste the fix into the other copies.`, '');
+front.push('- Copies of a section in different Trust threads have identical text and instructions except where the page carries a `!! TRUST-DEPENDENT TEXT` note; otherwise only the link numbers differ.', '');
 front.push('## Keyword placeholders', '', '| Keyword | Noted at | Deleted at | Tested at |', '| --- | --- | --- | --- |');
 for (const k of kwList) { const u = keywordUse[k]; front.push(`| ${KW(k)} | ${[...u.set].join(', ') || '—'} | ${[...u.del].join(', ') || '—'} | ${[...u.test].join(', ') || '—'} |`); }
 front.push('');
